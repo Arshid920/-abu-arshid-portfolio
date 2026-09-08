@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Abu Arshid P — Software Engineer, AI &amp; ML</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #FAFAF7;
+    --ink: #15181C;
+    --ink-soft: #52585F;
+    --accent: #2F6F4E;
+    --accent-soft: #E4EEE7;
+    --line: #DAD5C9;
+    --alert: #B5482F;
+    --maxw: 880px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    margin:0;
+    letter-spacing:-0.01em;
+  }
+  a{color:var(--accent);}
+  p{margin:0 0 1em 0;}
+  .mono{font-family:'IBM Plex Mono', monospace;}
+
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 28px;}
+
+  /* corner-bracket frame — a nod to bounding-box detection UI */
+  .bracket{position:relative;}
+  .bracket::before, .bracket::after,
+  .bracket .bl, .bracket .br{
+    content:"";
+    position:absolute;
+    width:16px; height:16px;
+    border-color:var(--accent);
+    border-style:solid;
+    border-width:0;
+    opacity:0;
+    transform:scale(0.6);
+    transition:opacity .5s ease, transform .5s ease;
+  }
+  .bracket::before{top:-1px; left:-1px; border-top-width:2px; border-left-width:2px;}
+  .bracket::after{top:-1px; right:-1px; border-top-width:2px; border-right-width:2px;}
+  .bracket .bl{bottom:-1px; left:-1px; border-bottom-width:2px; border-left-width:2px;}
+  .bracket .br{bottom:-1px; right:-1px; border-bottom-width:2px; border-right-width:2px;}
+  .bracket.locked::before, .bracket.locked::after,
+  .bracket.locked .bl, .bracket.locked .br{
+    opacity:1; transform:scale(1);
+  }
+
+  /* ---------- header / nav ---------- */
+  header{
+    position:sticky; top:0; z-index:10;
+    background:rgba(250,250,247,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  nav.wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    height:56px;
+  }
+  nav .id{font-family:'Space Grotesk'; font-weight:600; font-size:0.95rem;}
+  nav ul{list-style:none; display:flex; gap:22px; margin:0; padding:0;}
+  nav a{color:var(--ink-soft); text-decoration:none; font-size:0.92rem;}
+  nav a:hover{color:var(--accent);}
+  nav .menu-toggle{display:none;}
+
+  /* ---------- hero ---------- */
+  .hero{padding:88px 0 64px 0;}
+  .tag-label{
+    display:inline-block;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.78rem;
+    color:var(--accent);
+    background:var(--accent-soft);
+    padding:3px 9px;
+    margin-bottom:22px;
+  }
+  .hero h1{
+    font-size:clamp(2.4rem, 5.5vw, 4rem);
+    line-height:1.05;
+    max-width:11ch;
+  }
+  .hero .role{
+    margin-top:14px;
+    font-size:clamp(1.05rem, 2vw, 1.3rem);
+    color:var(--ink-soft);
+  }
+  .hero .lede{
+    margin-top:26px;
+    max-width:62ch;
+    font-size:1.05rem;
+    padding:20px 22px;
+  }
+  .hero .meta{
+    display:flex; flex-wrap:wrap; gap:18px;
+    margin-top:28px;
+    font-size:0.92rem;
+    color:var(--ink-soft);
+  }
+  .hero .meta a{color:var(--ink-soft); text-decoration:none; border-bottom:1px solid var(--line);}
+  .hero .meta a:hover{color:var(--accent); border-color:var(--accent);}
+
+  /* ---------- sections ---------- */
+  section{padding:56px 0; border-top:1px solid var(--line);}
+  section h2{font-size:1.4rem; margin-bottom:30px;}
+
+  /* experience */
+  .entry{
+    display:grid;
+    grid-template-columns:120px 1fr;
+    gap:20px;
+    padding:22px 0;
+    border-top:1px solid var(--line);
+  }
+  .entry:first-of-type{border-top:none;}
+  .entry time{font-family:'IBM Plex Mono'; font-size:0.85rem; color:var(--ink-soft); padding-top:2px;}
+  .entry h3{font-size:1.05rem;}
+  .entry .org{color:var(--ink-soft); font-size:0.95rem; margin-top:2px;}
+  .entry ul{margin:12px 0 0 0; padding-left:18px;}
+  .entry li{margin-bottom:6px; color:var(--ink);}
+
+  /* projects */
+  .projects-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:24px;
+  }
+  .proj{
+    position:relative;
+    padding:24px;
+    border:1px solid var(--line);
+  }
+  .proj h3{font-size:1.08rem; margin-bottom:8px;}
+  .proj ul{margin:12px 0 14px 0; padding-left:18px;}
+  .proj li{margin-bottom:6px; font-size:0.95rem;}
+  .stack{
+    display:flex; flex-wrap:wrap; gap:6px;
+    margin-top:14px;
+  }
+  .stack span{
+    font-family:'IBM Plex Mono'; font-size:0.72rem;
+    color:var(--accent);
+    border:1px solid var(--accent);
+    padding:2px 7px;
+  }
+
+  /* skills */
+  .skills-grid{
+    display:grid;
+    grid-template-columns:repeat(2, 1fr);
+    gap:22px 40px;
+  }
+  .skill-cat h3{font-size:0.95rem; color:var(--ink-soft); font-weight:500; margin-bottom:8px;}
+  .skill-cat p{margin:0; font-size:0.98rem;}
+
+  /* education / certs */
+  .edu-entry{padding:16px 0; border-top:1px solid var(--line);}
+  .edu-entry:first-of-type{border-top:none;}
+  .edu-entry h3{font-size:1.02rem;}
+  .edu-entry .org{color:var(--ink-soft); font-size:0.93rem; margin-top:2px;}
+  .edu-entry time{font-family:'IBM Plex Mono'; font-size:0.82rem; color:var(--ink-soft);}
+
+  .cert-list{list-style:none; margin:0; padding:0;}
+  .cert-list li{
+    padding:10px 0; border-top:1px solid var(--line);
+    font-size:0.96rem; display:flex; justify-content:space-between; gap:16px;
+  }
+  .cert-list li:first-child{border-top:none;}
+  .cert-list .cert-src{color:var(--ink-soft); font-size:0.88rem;}
+
+  .lang-row{display:flex; flex-wrap:wrap; gap:26px;}
+  .lang-row div{font-size:0.96rem;}
+  .lang-row span{display:block; color:var(--ink-soft); font-size:0.82rem; margin-top:2px;}
+
+  /* contact */
+  .contact-box{
+    padding:30px;
+    background:var(--accent-soft);
+  }
+  .contact-box h2{margin-bottom:14px;}
+  .contact-links{display:flex; flex-wrap:wrap; gap:22px; margin-top:18px;}
+  .contact-links a{
+    font-family:'IBM Plex Mono'; font-size:0.9rem;
+    color:var(--ink); text-decoration:none;
+    border-bottom:1px solid var(--ink);
+    padding-bottom:2px;
+  }
+  .contact-links a:hover{color:var(--accent); border-color:var(--accent);}
+
+  footer{padding:26px 0 40px 0; color:var(--ink-soft); font-size:0.85rem;}
+
+  /* focus visibility */
+  a:focus-visible, button:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+
+  @media (max-width: 720px){
+    nav ul{gap:14px;}
+    .entry{grid-template-columns:1fr; gap:4px;}
+    .projects-grid{grid-template-columns:1fr;}
+    .skills-grid{grid-template-columns:1fr;}
+    .hero{padding:64px 0 44px 0;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .bracket::before, .bracket::after, .bracket .bl, .bracket .br{
+      transition:none; opacity:1; transform:none;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="wrap">
+    <div class="id">Abu Arshid P</div>
+    <ul>
+      <li><a href="#about">About</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+
+  <section class="hero wrap" style="border-top:none;">
+    <span class="tag-label">SOFTWARE ENGINEER · AI/ML</span>
+    <h1>Abu Arshid P</h1>
+    <p class="role">Building AI-driven, user-focused software — from computer-vision safety systems to full-stack web apps.</p>
+
+    <div class="bracket lead-frame">
+      <span class="bl"></span><span class="br"></span>
+      <p class="lede">
+        MCA graduate specializing in Artificial Intelligence and Machine Learning, proficient across Python, Java, React.js, SQL and JavaScript.
+        I like turning research-grade ML ideas — object detection, predictive safety models — into working, deployable products.
+      </p>
+    </div>
+
+    <div class="meta">
+      <span>Dubai, UAE</span>
+      <a href="mailto:abuarshidppp@gmail.com">abuarshidppp@gmail.com</a>
+      <a href="tel:+971525776735">+971 52 577 6735</a>
+      <a href="http://linkedin.com/in/abu-arshid" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="wrap">
+      <h2>About</h2>
+      <p style="max-width:66ch; font-size:1.02rem;">
+        Results-driven software engineer and MCA graduate with a specialization in Artificial Intelligence and Machine Learning.
+        Hands-on experience developing web applications and AI-based projects, with a strong grounding in object-oriented
+        programming, database management and ML fundamentals. Quick learner with strong analytical and problem-solving
+        skills, looking to contribute to innovative software development and AI-driven products.
+      </p>
+    </div>
+  </section>
+
+  <section id="experience">
+    <div class="wrap">
+      <h2>Experience</h2>
+
+      <div class="entry">
+        <time>2025</time>
+        <div>
+          <h3>React JS Intern</h3>
+          <div class="org">ERE Business Solutions · India</div>
+          <ul>
+            <li>Developed responsive and interactive web interfaces using React JS.</li>
+            <li>Built reusable components and implemented smooth navigation with React Router.</li>
+            <li>Collaborated with the backend team to integrate APIs and ensure seamless data flow.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="entry">
+        <time>2023</time>
+        <div>
+          <h3>Python Technology Intern</h3>
+          <div class="org">Acura Software Solutions · India</div>
+          <ul>
+            <li>Completed a 20-day internship program focused on Python technology and practical software development.</li>
+            <li>Took part in live demonstrations, technical sessions and industry interaction activities.</li>
+            <li>Gained hands-on exposure to Python fundamentals and real-world development practices.</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="wrap">
+      <h2>Projects</h2>
+      <div class="projects-grid">
+
+        <div class="proj bracket lock-on">
+          <span class="bl"></span><span class="br"></span>
+          <h3>Vision-Enabled AI Boat Safety &amp; Passenger Monitoring System</h3>
+          <ul>
+            <li>Smart boat-safety system predicting trip status (Safe / Caution / Unsafe) from weather, wind speed, wave height and boat conditions.</li>
+            <li>Real-time passenger monitoring with OpenCV and YOLO — crowd detection, overcrowding alerts, onboard heatmap generation.</li>
+            <li>Safety features including life-jacket detection and a person-overboard alert system on live video.</li>
+          </ul>
+          <div class="stack">
+            <span>Python</span><span>OpenCV</span><span>YOLO</span><span>Flask</span><span>ML</span>
+          </div>
+        </div>
+
+        <div class="proj bracket lock-on">
+          <span class="bl"></span><span class="br"></span>
+          <h3>Medshed — Medical Scheduling &amp; Assistance System</h3>
+          <ul>
+            <li>Scheduling and assistance system supporting patient appointment management and emergency coordination.</li>
+            <li>Patient-side features: appointment booking, schedule viewing, basic medical information access.</li>
+            <li>Bystander module enabling quick assistance requests during medical emergencies.</li>
+          </ul>
+          <div class="stack">
+            <span>MongoDB</span><span>Express.js</span><span>React.js</span><span>Node.js</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="wrap">
+      <h2>Skills</h2>
+      <div class="skills-grid">
+        <div class="skill-cat">
+          <h3>Frontend</h3>
+          <p>React.js, HTML5, CSS3, Bootstrap</p>
+        </div>
+        <div class="skill-cat">
+          <h3>Backend</h3>
+          <p>REST APIs</p>
+        </div>
+        <div class="skill-cat">
+          <h3>Databases</h3>
+          <p>MySQL, PostgreSQL</p>
+        </div>
+        <div class="skill-cat">
+          <h3>AI / ML</h3>
+          <p>Machine Learning, Scikit-learn, Pandas, NumPy, Data Preprocessing</p>
+        </div>
+        <div class="skill-cat">
+          <h3>Tools</h3>
+          <p>Git, GitHub, VS Code, Jupyter Notebook, Postman</p>
+        </div>
+        <div class="skill-cat">
+          <h3>Concepts</h3>
+          <p>OOP, Data Structures &amp; Algorithms, SDLC, Agile Methodology</p>
+        </div>
+        <div class="skill-cat">
+          <h3>Languages (programming)</h3>
+          <p>Python, Java, JavaScript, SQL, Golang</p>
+        </div>
+        <div class="skill-cat">
+          <h3>Also</h3>
+          <p>Power BI</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="education">
+    <div class="wrap">
+      <h2>Education</h2>
+
+      <div class="edu-entry">
+        <h3>Master of Computer Application (MCA)</h3>
+        <div class="org">Jain Deemed-to-be-University, India</div>
+        <time>2025 – 2026</time>
+      </div>
+      <div class="edu-entry">
+        <h3>Bachelor of Computer Application (BCA)</h3>
+        <div class="org">University of Calicut, India</div>
+        <time>2021 – 2024</time>
+      </div>
+    </div>
+  </section>
+
+  <section id="certifications">
+    <div class="wrap">
+      <h2>Certifications</h2>
+      <ul class="cert-list">
+        <li><span>One Million Prompters</span><span class="cert-src">Dubai Centre for Artificial Intelligence · Jul 2026</span></li>
+        <li><span>Career Essentials in Generative AI</span><span class="cert-src">Microsoft &amp; LinkedIn Learning</span></li>
+        <li><span>Artificial Intelligence Fundamentals</span><span class="cert-src">IBM SkillsBuild</span></li>
+        <li><span>Responsible AI: Applying AI Principles with Google Cloud</span><span class="cert-src">Google Cloud Skills Boost (SkillUp by Simplilearn)</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="languages">
+    <div class="wrap">
+      <h2>Languages</h2>
+      <div class="lang-row">
+        <div>English <span>Professional</span></div>
+        <div>Malayalam <span>Native</span></div>
+        <div>Tamil <span>Conversational</span></div>
+        <div>Hindi <span>Conversational</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" style="border-bottom:none;">
+    <div class="wrap">
+      <div class="contact-box">
+        <h2>Get in touch</h2>
+        <p style="max-width:56ch; color:var(--ink-soft);">Open to software engineering and AI/ML roles — happy to talk about any of the above in more detail.</p>
+        <div class="contact-links">
+          <a href="mailto:abuarshidppp@gmail.com">abuarshidppp@gmail.com</a>
+          <a href="tel:+971525776735">+971 52 577 6735</a>
+          <a href="http://linkedin.com/in/abu-arshid" target="_blank" rel="noopener">linkedin.com/in/abu-arshid</a>
+          <span>Dubai, UAE</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="wrap">
+  <div>© 2026 Abu Arshid P</div>
+</footer>
+
+<script>
+  // one orchestrated "lock-on" moment on load — brackets snap onto the hero frame
+  window.addEventListener('DOMContentLoaded', () => {
+    const leadFrame = document.querySelector('.lead-frame');
+    if (leadFrame) setTimeout(() => leadFrame.classList.add('locked'), 300);
+  });
+
+  // project cards lock on when they scroll into view
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting){
+        entry.target.classList.add('locked');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  document.querySelectorAll('.lock-on').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
